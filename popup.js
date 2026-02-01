@@ -17,7 +17,7 @@ const confirmYes = document.getElementById("confirmYes");
 const confirmNo = document.getElementById("confirmNo");
 
 let editingIndex = null;
-const MAX_VISIBLE_ITEMS = 4;
+const MAX_VISIBLE_ITEMS = 3;
 let toastTimeout = null;
 let showAll = false;
 
