@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "Google Form Autofill Helper",
-  "version": "1.0",
-  "description": "Auto-fills common Google Form fields like name, email, phone",
+  "name": "G-Fill Google Form Autofill Helper",
+  "version": "1.3",
+  "description": "G-Filler – Smart Google Form Autofill Automatically fills your common Google Form fields like Name, Email, Phone, and ID — save time and breeze through forms with one click.",
   "permissions": ["activeTab", "scripting", "storage"],
   "content_scripts": [
     {
