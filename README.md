@@ -3,7 +3,7 @@
 ## What is this? (in 5 seconds)
 A lightweight Chrome extension that saves your common answers and fills Google Forms automatically.
 
-[How it works](https://imgur.com/a/bDav5vA)
+![How it works](screenshots/howitworks.gif)
 
 ## Why should I use it?
 It saves time on repetitive form filling and keeps your frequently used responses ready in one place.
