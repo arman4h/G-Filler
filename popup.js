@@ -19,6 +19,7 @@ const confirmNo = document.getElementById("confirmNo");
 let editingIndex = null;
 const MAX_VISIBLE_ITEMS = 4;
 let toastTimeout = null;
+let showAll = false;
 
 // Toast notification function
 function showToast(message, duration = 2000) {
@@ -112,7 +113,7 @@ function renderDataList(rules) {
   dataList.innerHTML = "";
   itemCount.textContent = `${rules.length} ${rules.length === 1 ? "item" : "items"}`;
 
-  const visibleRules = rules.slice(0, MAX_VISIBLE_ITEMS);
+  const visibleRules = showAll ? rules : rules.slice(0, MAX_VISIBLE_ITEMS);
   
   visibleRules.forEach((rule, index) => {
     
@@ -134,6 +135,7 @@ function renderDataList(rules) {
   // Show "See all data" link if more than MAX_VISIBLE_ITEMS
   if (rules.length > MAX_VISIBLE_ITEMS) {
     seeAllBtn.classList.remove("hidden");
+    seeAllBtn.textContent = showAll ? "-- Show Less --" : "-- See All Data --";
   } else {
     seeAllBtn.classList.add("hidden");
   }
@@ -278,23 +280,39 @@ cancelBtn.onclick = hideForm;
 autoFillBtn.onclick = autoFill;
 
 seeAllBtn.onclick = () => {
-  chrome.storage.local.get("rules", data => {
-    const rules = data.rules || [];
-    showToast(`Total ${rules.length} data items stored`);
-  });
+  showAll = !showAll;
+  loadRules();
 };
 
 // Theme toggle
 const lightIcon = document.getElementById("lightIcon");
 const darkIcon = document.getElementById("darkIcon");
 
+function applyTheme(isDark) {
+  document.body.classList.toggle("dark", isDark);
+  lightIcon.classList.toggle("hidden", isDark);
+  lightIcon.classList.toggle("block", !isDark);
+  darkIcon.classList.toggle("hidden", !isDark);
+  darkIcon.classList.toggle("block", isDark);
+}
+
 themeToggle.onclick = () => {
-  document.body.classList.toggle("dark");
-  lightIcon.classList.toggle("hidden");
-  lightIcon.classList.toggle("block");
-  darkIcon.classList.toggle("hidden");
-  darkIcon.classList.toggle("block");
+  const isDark = !document.body.classList.contains("dark");
+  applyTheme(isDark);
+  chrome.storage.local.set({ theme: isDark ? "dark" : "light" });
 };
 
 // Load rules on open
 migrateStorage();
+
+// Restore theme on open
+chrome.storage.local.get("theme", data => {
+  applyTheme(data.theme === "dark");
+});
+
+// Listen for toast messages from content script
+chrome.runtime.onMessage.addListener((msg) => {
+  if (msg?.type === "SHOW_TOAST" && msg.message) {
+    showToast(msg.message);
+  }
+});
