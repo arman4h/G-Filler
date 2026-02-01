@@ -18,13 +18,18 @@ const confirmNo = document.getElementById("confirmNo");
 
 let editingIndex = null;
 const MAX_VISIBLE_ITEMS = 4;
+let toastTimeout = null;
 
 // Toast notification function
 function showToast(message, duration = 2000) {
   toast.textContent = message;
   toast.classList.add("show");
-  
-  setTimeout(() => {
+
+  if (toastTimeout) {
+    clearTimeout(toastTimeout);
+  }
+
+  toastTimeout = setTimeout(() => {
     toast.classList.remove("show");
   }, duration);
 }
@@ -34,23 +39,41 @@ function showConfirm(message) {
   return new Promise((resolve) => {
     confirmMessage.textContent = message;
     confirmOverlay.classList.add("show");
-    
+
     function handleYes() {
       confirmOverlay.classList.remove("show");
       confirmYes.removeEventListener("click", handleYes);
       confirmNo.removeEventListener("click", handleNo);
+      confirmOverlay.removeEventListener("click", handleOverlayClick);
+      document.removeEventListener("keydown", handleKeyDown);
       resolve(true);
     }
-    
+
     function handleNo() {
       confirmOverlay.classList.remove("show");
       confirmYes.removeEventListener("click", handleYes);
       confirmNo.removeEventListener("click", handleNo);
+      confirmOverlay.removeEventListener("click", handleOverlayClick);
+      document.removeEventListener("keydown", handleKeyDown);
       resolve(false);
     }
-    
+
+    function handleOverlayClick(event) {
+      if (event.target === confirmOverlay) {
+        handleNo();
+      }
+    }
+
+    function handleKeyDown(event) {
+      if (event.key === "Escape") {
+        handleNo();
+      }
+    }
+
     confirmYes.addEventListener("click", handleYes);
     confirmNo.addEventListener("click", handleNo);
+    confirmOverlay.addEventListener("click", handleOverlayClick);
+    document.addEventListener("keydown", handleKeyDown);
   });
 }
 
@@ -78,26 +101,20 @@ function migrateStorage() {
 
 // Load and display rules
 function loadRules() {
-  console.log("Loading rules...");
   chrome.storage.local.get("rules", data => {
-    console.log("Loaded data:", data);
     const rules = data.rules || [];
-    console.log("Rules array:", rules);
     renderDataList(rules);
   });
 }
 
 // Render data list
 function renderDataList(rules) {
-  console.log("Rendering data list with rules:", rules);
   dataList.innerHTML = "";
-  itemCount.textContent = `${rules.length} items`;
-  
+  itemCount.textContent = `${rules.length} ${rules.length === 1 ? "item" : "items"}`;
+
   const visibleRules = rules.slice(0, MAX_VISIBLE_ITEMS);
-  console.log("Visible rules:", visibleRules);
   
-  rules.forEach((rule, index) => {
-    if (index >= MAX_VISIBLE_ITEMS) return;
+  visibleRules.forEach((rule, index) => {
     
     const item = document.createElement("div");
     item.className = "data-item";
@@ -112,7 +129,6 @@ function renderDataList(rules) {
       </div>
     `;
     dataList.appendChild(item);
-    console.log("Added item with index:", index);
   });
   
   // Show "See all data" link if more than MAX_VISIBLE_ITEMS
@@ -184,8 +200,6 @@ function saveRule() {
     .map(t => t.trim().toLowerCase())
     .filter(Boolean);
   
-  console.log("Saving rule:", { fieldName, value, tags });
-  
   if (!fieldName || !value || !tags.length) {
     showToast("Please fill all fields");
     return;
@@ -200,12 +214,9 @@ function saveRule() {
       rules.push({ fieldName, value, tags });
     }
     
-    console.log("Rules to save:", rules);
-    
     // Save to both local and sync storage
     chrome.storage.local.set({ rules }, () => {
       chrome.storage.sync.set({ rules }, () => {
-        console.log("Rules saved successfully to both storages");
         showToast(editingIndex !== null ? "Rule updated ✅" : "Rule added ✅");
         hideForm();
         loadRules();
@@ -221,21 +232,16 @@ function editRule(index) {
 
 // Delete rule
 async function deleteRule(index) {
-  console.log("Attempting to delete rule at index:", index);
   const confirmed = await showConfirm("Delete this rule?");
   if (!confirmed) return;
   
   chrome.storage.local.get("rules", data => {
     let rules = data.rules || [];
-    console.log("Current rules before delete:", rules);
-    console.log("Deleting index:", index);
     rules.splice(index, 1);
-    console.log("Rules after delete:", rules);
     
     // Save to both local and sync to ensure complete deletion
     chrome.storage.local.set({ rules }, () => {
       chrome.storage.sync.set({ rules }, () => {
-        console.log("Deleted rule saved to both storages");
         showToast("Rule deleted ✅");
         loadRules();
       });
@@ -291,7 +297,4 @@ themeToggle.onclick = () => {
 };
 
 // Load rules on open
-console.log("Popup loaded, initializing...");
-console.log("dataList element:", dataList);
-console.log("formSection element:", formSection);
 migrateStorage();
