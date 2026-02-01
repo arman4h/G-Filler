@@ -3,6 +3,8 @@
 ## What is this? (in 5 seconds)
 A lightweight Chrome extension that saves your common answers and fills Google Forms automatically.
 
+![How it works](screenshots/howitworks.gif)
+
 ## Why should I use it?
 It saves time on repetitive form filling and keeps your frequently used responses ready in one place.
 
@@ -30,9 +32,5 @@ It saves time on repetitive form filling and keeps your frequently used response
 4. Open a Google Form.
 5. Click "Auto Fillup" to fill matching fields.
 
-## Is it safe?
-Your data is stored locally in your browser using chrome.storage and is not sent anywhere.
-
-## Who made it & how to contribute?
-Made by Arman.
+![How to add new fields](screenshots/HowToAddNewFields%20.gif)
 To contribute, open an issue or submit a pull request with a clear description of your changes.
