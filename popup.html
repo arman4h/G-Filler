@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>GFiller</title>
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet"/>
+  <style>
+    :root {
+      --primary: #1d82f0;
+      --bg-light: #f3f4f6;
+      --bg-dark: #111827;
+      --card-light: #e0f2fe;
+      --card-dark: #1e293b;
+      --gray-50: #f9fafb;
+      --gray-100: #f3f4f6;
+      --gray-200: #e5e7eb;
+      --gray-300: #d1d5db;
+      --gray-400: #9ca3af;
+      --gray-500: #6b7280;
+      --gray-600: #4b5563;
+      --gray-700: #374151;
+      --gray-800: #1f2937;
+      --gray-900: #111827;
+      --red-50: #fef2f2;
+      --red-500: #ef4444;
+      --red-900: #7f1d1d;
+      --blue-600: #2563eb;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      border-radius: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      font-family: 'Inter', sans-serif;
+      overflow: hidden;
+    }
+    
+    html::-webkit-scrollbar {
+      width: 0;
+      height: 0;
+      display: none;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-light);
+      margin: 0;
+      padding: 0;
+      width: 365px;
+      overflow: hidden;
+    }
+    
+    body::-webkit-scrollbar {
+      width: 0;
+      height: 0;
+      display: none;
+    }
+
+    body.dark {
+      background-color: var(--bg-dark);
+    }
+    
+    .custom-scrollbar {
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 0;
+      height: 0;
+      display: none;
+    }
+
+    /* Container & Layout */
+    .main-container {
+      width: 100%;
+      background-color: white;
+      color: #111827;
+      min-height: 100vh;
+      overflow: hidden;
+      border: none;
+      border-radius: 16px;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    body.dark .main-container {
+      background-color: #111827;
+      color: white;
+    }
+
+    /* Header */
+    .header {
+      padding: 12px 16px 8px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .header h1 {
+      font-size: 21px;
+      font-weight: 700;
+      color: #111827;
+      letter-spacing: -0.025em;
+      margin: 0;
+      text-align: left;
+      flex: 1;
+    }
+
+    body.dark .header h1 {
+      color: white;
+    }
+
+    .header-divider {
+      margin-top: 10px;
+      border-bottom: 1px solid var(--gray-100);
+    }
+
+    body.dark .header-divider {
+      border-bottom-color: var(--gray-800);
+    }
+
+    /* Content */
+    .content {
+      padding: 0 20px 12px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    /* Data List Section */
+    .data-section {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 10px;
+      padding-left: 4px;
+      padding-right: 4px;
+    }
+
+    .section-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: #1f2937;
+    }
+
+    body.dark .section-title {
+      color: #e5e7eb;
+    }
+
+    .item-count {
+      font-size: 10px;
+      color: var(--gray-400);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-weight: 600;
+    }
+
+    body.dark .item-count {
+      color: var(--gray-500);
+    }
+
+    .data-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-height: 400px;
+      overflow-y: auto;
+      padding-right: 4px;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+    
+    .data-list::-webkit-scrollbar {
+      width: 0;
+      height: 0;
+      display: none;
+    }
+
+    .data-item {
+      background-color: var(--card-light);
+      padding: 12px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: all 0.2s;
+    }
+
+    body.dark .data-item {
+      background-color: var(--card-dark);
+    }
+
+    
+    .data-item-content {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .data-item-label {
+      font-size: 8px;
+      color: var(--gray-500);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    body.dark .data-item-label {
+      color: var(--gray-400);
+    }
+
+    .data-item-value {
+      font-size: 14px;
+      font-weight: 700;
+      color: #111827;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      padding-right: 8px;
+    }
+
+    body.dark .data-item-value {
+      color: #f3f4f6;
+    }
+
+    .data-item-actions {
+      display: flex;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
+    .icon-btn {
+      padding: 6px;
+      background-color: white;
+      color: var(--primary);
+      border: none;
+      border-radius: 10px;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .icon-btn .material-icons-outlined {
+      font-size: 18px;
+    }
+
+    body.dark .icon-btn {
+      background-color: var(--gray-800);
+    }
+
+    .icon-btn:hover {
+      background-color: var(--primary);
+      color: white;
+    }
+
+    .delete-btn {
+      color: var(--red-500);
+      background-color: #fef2f2;
+    }
+
+    body.dark .delete-btn {
+      background-color: rgba(127, 29, 29, 0.3);
+    }
+
+    .delete-btn:hover {
+      background-color: var(--red-500);
+      color: white;
+    }
+
+    /* See All Link */
+    .see-all-section {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding-top: 4px;
+    }
+
+    .divider {
+      height: 1px;
+      background-color: var(--gray-200);
+      flex: 1;
+    }
+
+    body.dark .divider {
+      background-color: var(--gray-700);
+    }
+
+    .see-all-btn {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--gray-400);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      background: none;
+      border: none;
+      cursor: pointer;
+      transition: color 0.2s;
+      padding: 0;
+    }
+
+    .see-all-btn:hover {
+      color: var(--primary);
+    }
+
+    body.dark .see-all-btn {
+      color: var(--gray-500);
+    }
+
+    .see-all-btn.hidden {
+      display: none;
+    }
+
+    /* Form Section */
+    .form-section {
+      display: none;
+      width: 100%;
+      flex-direction: column;
+      gap: 8px;
+      border-top: 1px solid var(--gray-100);
+      padding-top: 10px;
+    }
+
+    body.dark .form-section {
+      border-top-color: var(--gray-800);
+    }
+
+    .form-section.active {
+      display: flex;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .form-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--gray-600);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 8px;
+    }
+
+    body.dark .form-label {
+      color: var(--gray-400);
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 10px 14px;
+      background-color: #f9fafb;
+      border: 1px solid var(--gray-200);
+      border-radius: 18px;
+      font-size: 14px;
+      font-family: inherit;
+      transition: all 0.2s;
+      color: #111827;
+    }
+
+    body.dark .form-input {
+      background-color: var(--gray-800);
+      border-color: var(--gray-700);
+      color: white;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(29, 130, 240, 0.1);
+    }
+
+    /* Buttons */
+    .button-group {
+      display: flex;
+      padding-top: 6px;
+      gap: 12px;
+    }
+
+    .btn {
+      padding: 12px 16px;
+      border: none;
+      border-radius: 18px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+
+    .btn-primary {
+      flex: 1;
+      height: 44px;
+      background-color: var(--primary);
+      color: white;
+      margin-bottom: 4px;
+      border-radius: 18px;
+    }
+
+    .btn-primary:hover {
+      background-color: var(--blue-600);
+    }
+
+    .btn-cancel {
+      flex: 1;
+      height: 44px;
+      background-color: var(--gray-200);
+      color: var(--gray-800);
+      border-radius: 18px;
+    }
+
+    body.dark .btn-cancel {
+      background-color: var(--gray-700);
+      color: white;
+    }
+
+    .btn-cancel:hover {
+      background-color: var(--gray-300);
+    }
+
+    body.dark .btn-cancel:hover {
+      background-color: var(--gray-600);
+    }
+
+    .btn-secondary {
+      width: 100%;
+      padding: 10px 15px;
+      cursor: pointer;
+      border: 2px solid var(--primary);
+      background-color: white;
+      color: var(--primary);
+      font-weight: 700;
+      border-radius: 14px;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+
+    body.dark .btn-secondary {
+      background-color: transparent;
+    }
+
+    .btn-secondary:hover {
+      background-color: var(--primary);
+      color: white;
+    }
+
+    .btn-action {
+      width: 100%;
+      padding: 12px;
+      background-color: var(--primary);
+      color: white;
+      font-weight: 700;
+      border-radius: 14px;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 10px 15px -3px rgba(29, 130, 240, 0.3);
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+
+    .btn-action:hover {
+      box-shadow: 0 10px 25px -3px rgba(29, 130, 240, 0.4);
+    }
+
+    .btn-action:active {
+      transform: scale(0.98);
+    }
+
+    /* Buttons Section */
+    .buttons-section {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .add-data-section {
+      padding-top: 8px;
+    }
+
+    /* Footer */
+    .footer {
+      padding: 8px 32px 12px 32px;
+      text-align: center;
+    }
+
+    .theme-btn {
+      padding: 6px;
+      width: 32px;
+      height: 32px;
+      background-color: var(--gray-100);
+      border: 1px solid var(--gray-200);
+      border-radius: 50%;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+      color: var(--gray-600);
+      cursor: pointer;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    body.dark .theme-btn {
+      background-color: var(--gray-800);
+      border-color: var(--gray-700);
+      color: var(--gray-300);
+    }
+
+    .theme-btn:hover {
+      background-color: var(--gray-200);
+    }
+
+    body.dark .theme-btn:hover {
+      background-color: var(--gray-700);
+    }
+
+    .material-icons-outlined {
+      font-size: 20px;
+      line-height: 1;
+      display: inline-block;
+    }
+
+    /* Hidden & Block */
+    .hidden {
+      display: none !important;
+    }
+
+    .block {
+      display: block;
+    }
+
+    .inline-flex {
+      display: inline-flex;
+    }
+
+    /* Toast Notification */
+    .toast {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-100px);
+      background-color: #111827;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+      z-index: 10000;
+      opacity: 0;
+      transition: all 0.3s ease;
+      font-size: 14px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      max-width: 280px;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    body.dark .toast {
+      background-color: white;
+      color: #111827;
+      box-shadow: 0 10px 25px rgba(255, 255, 255, 0.3);
+    }
+
+    /* Confirm Dialog */
+    .confirm-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 10001;
+    }
+
+    .confirm-overlay.show {
+      display: flex;
+    }
+
+    .confirm-dialog {
+      background-color: white;
+      padding: 20px;
+      border-radius: 16px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+      max-width: 300px;
+      width: 90%;
+    }
+
+    body.dark .confirm-dialog {
+      background-color: var(--gray-800);
+    }
+
+    .confirm-message {
+      font-size: 14px;
+      font-weight: 600;
+      color: #111827;
+      margin-bottom: 16px;
+      text-align: center;
+    }
+
+    body.dark .confirm-message {
+      color: white;
+    }
+
+    .confirm-buttons {
+      display: flex;
+      gap: 10px;
+    }
+
+    .confirm-btn {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+
+    .confirm-btn-yes {
+      background-color: var(--red-500);
+      color: white;
+    }
+
+    .confirm-btn-yes:hover {
+      background-color: #dc2626;
+    }
+
+    .confirm-btn-no {
+      background-color: var(--gray-200);
+      color: var(--gray-800);
+    }
+
+    body.dark .confirm-btn-no {
+      background-color: var(--gray-700);
+      color: white;
+    }
+
+    .confirm-btn-no:hover {
+      background-color: var(--gray-300);
+    }
+
+    body.dark .confirm-btn-no:hover {
+      background-color: var(--gray-600);
+    }
+  </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark m-0 p-0 w-[420px]">
+  <div class="main-container">
+    <!-- Header -->
+    <div class="header">
+      <h1>GFiller</h1>
+      <button id="themeToggle" class="theme-btn">
+        <span class="material-icons-outlined block" id="lightIcon">dark_mode</span>
+        <span class="material-icons-outlined hidden" id="darkIcon">light_mode</span>
+      </button>
+    </div>
+    <div class="header-divider"></div>
+
+    <!-- Main Content -->
+    <div class="content">
+      <!-- Data List Section -->
+      <div class="data-section">
+        <div class="section-header">
+          <h2 class="section-title">Data List</h2>
+          <span class="item-count" id="itemCount">0 items</span>
+        </div>
+        
+        <div class="data-list custom-scrollbar" id="dataList"></div>
+        <div class="see-all-section">
+          <div class="divider"></div>
+          <button class="see-all-btn hidden" id="seeAllBtn">-- See All Data --</button>
+          <div class="divider"></div>
+        </div>
+      </div>
+
+      <!-- Form Section (Hidden by default) -->
+      <div id="formSection" class="form-section">
+        <div>
+          <input type="text" id="fieldName" placeholder="Field Name" class="form-input"/>
+        </div>
+        <div>
+          <input type="text" id="fieldValue" placeholder="Field Value" class="form-input"/>
+        </div>
+        <div>
+          <input type="text" id="fieldTags" placeholder="Tags (give by comma)" class="form-input"/>
+        </div>
+        <div class="button-group">
+          <button id="saveBtn" class="btn btn-primary">Save</button>
+          <button id="cancelBtn" class="btn btn-cancel">Cancel</button>
+        </div>
+      </div>
+
+      <!-- Buttons Section -->
+      <div class="buttons-section">
+        <button id="addDataBtn" class="btn-secondary">
+          <span class="material-icons-outlined">add_circle_outline</span>
+          Add Data
+        </button>
+        <div class="add-data-section">
+          <button id="autoFillBtn" class="btn-action">
+            <span class="material-icons-outlined">auto_fix_high</span>
+            Auto Fillup
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast" id="toast"></div>
+
+  <!-- Confirm Dialog -->
+  <div class="confirm-overlay" id="confirmOverlay">
+    <div class="confirm-dialog">
+      <div class="confirm-message" id="confirmMessage"></div>
+      <div class="confirm-buttons">
+        <button class="confirm-btn confirm-btn-no" id="confirmNo">Cancel</button>
+        <button class="confirm-btn confirm-btn-yes" id="confirmYes">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
