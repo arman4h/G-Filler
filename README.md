@@ -1,9 +1,9 @@
 # Google Form Autofill Helper
 
-## What is this? (in 5 seconds)
+## What is this? (wait some seconds to load)
 A lightweight Chrome extension that saves your common answers and fills Google Forms automatically.
 
-![How it works](screenshots/howitworks.gif)
+![How it works](screenshots/howgfilworks.gif)
 
 ## Why should I use it?
 It saves time on repetitive form filling and keeps your frequently used responses ready in one place.
@@ -32,5 +32,5 @@ It saves time on repetitive form filling and keeps your frequently used response
 4. Open a Google Form.
 5. Click "Auto Fillup" to fill matching fields.
 
-![How to add new fields](screenshots/HowToAddNewFields%20.gif)
+![How to add new fields](screenshots/howtoaddfields.gif)
 To contribute, open an issue or submit a pull request with a clear description of your changes.
