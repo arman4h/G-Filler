@@ -15,12 +15,64 @@ It saves time on repetitive form filling and keeps your frequently used response
 - Light/Dark theme toggle.
 
 ## How do I install it? (step-by-step, no assumptions)
-1. Download or clone this project to your computer.
-2. Open Chrome and go to chrome://extensions.
-3. Turn on "Developer mode" (top-right toggle).
-4. Click "Load unpacked".
-5. Select the project folder: e:\Personal\WebProjects\google-form-autofill.
-6. The extension will appear in your extensions list.
+
+G-Filler is not yet available on the Chrome Web Store.  
+You can install it manually in Chrome by following the steps below.
+
+---
+
+### 🔽 Step 1: Download the Extension
+
+Download the latest version of G-Filler from GitHub:
+
+👉 **[Download G-Filler (ZIP)](https://github.com/user-attachments/files/25005402/gfill-webextention-v1.3.zip)**
+
+After downloading:
+- Extract (unzip) the file
+- You will get a folder named `g-filler-main`
+
+---
+
+### 🧩 Step 2: Open Chrome Extensions Page
+
+1. Open Google Chrome
+2. In the address bar, go to:
+3. Enable **Developer mode** (top-right corner)
+
+---
+
+### 📂 Step 3: Load the Extension
+
+1. Click **Load unpacked**
+2. Select the extracted folder:
+
+(⚠️ Select the folder that contains `manifest.json`)
+
+3. Click **Select Folder**
+
+✅ G-Filler is now installed in your browser.
+
+---
+
+### 📌 Step 4: Pin the Extension (Recommended)
+
+1. Click the puzzle 🧩 icon in Chrome toolbar
+2. Find **G-Filler**
+3. Click the pin 📌 icon
+
+This makes G-Filler easily accessible.
+
+---
+
+### ▶️ Step 5: Start Using G-Filler
+
+1. Click the G-Filler extension icon
+2. Add your custom fields (Name, Email, Phone, etc.)
+3. Open any Google Form
+4. Run G-Filler to auto-fill the form
+
+🎉 Done!
+
 
 ## How do I use it?
 1. Click the extension icon to open the popup.
@@ -33,4 +85,11 @@ It saves time on repetitive form filling and keeps your frequently used response
 5. Click "Auto Fillup" to fill matching fields.
 
 ![How to add new fields](screenshots/howtoaddfields.gif)
+
+
 To contribute, open an issue or submit a pull request with a clear description of your changes.
+
+> ⚠️ **Chrome Warning Notice**
+>
+> Chrome may show a warning saying the extension is installed in developer mode.  
+> This is normal for manually installed extensions and is completely safe.
